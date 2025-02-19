@@ -4,23 +4,15 @@ const cors = require("cors");
 const routes = require("./routes");
 const os = require("os");
 
-const app = express(); // 🛠️ Definir `app` antes de usarlo
+const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Manejar caracteres especiales
+app.use(express.urlencoded({ extended: true }));
 
-// Forzar UTF-8 en las respuestas
-app.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
-  next();
-});
-
-app.use("/api", routes);
-
-// Obtener la IP de la máquina
-function getLocalIP() {
+// Obtener la IP pública del servidor
+function getServerIP() {
   const interfaces = os.networkInterfaces();
   for (const iface of Object.values(interfaces)) {
     for (const config of iface) {
@@ -32,8 +24,9 @@ function getLocalIP() {
   return "localhost";
 }
 
-const IP_ADDRESS = getLocalIP();
+const IP_ADDRESS = getServerIP();
 
-app.listen(PORT, () => {
-  console.log(`Servidosr corriendo en http://${IP_ADDRESS}:${PORT}`);
+// Iniciar el servidor en 0.0.0.0 para que sea accesible desde cualquier IP
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Servidor corriendo en http://${IP_ADDRESS}:${PORT}`);
 });
