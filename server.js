@@ -35,5 +35,5 @@ function getLocalIP() {
 const IP_ADDRESS = getLocalIP();
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://${IP_ADDRESS}:${PORT}`);
+  console.log(`Servidosr corriendo en http://${IP_ADDRESS}:${PORT}`);
 });
